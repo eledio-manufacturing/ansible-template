@@ -1,0 +1,78 @@
+---
+- name: Validate required vars for git deploy
+  ansible.builtin.fail:
+    msg: "app_git_repo and app_git_token must be set when app_deploy_source is 'git'"
+  when: app_deploy_source == 'git' and (app_git_repo is not defined or app_git_token is not defined)
+
+- name: Validate required vars for local deploy
+  ansible.builtin.fail:
+    msg: "app_local_path must be set when app_deploy_source is 'local'"
+  when: app_deploy_source == 'local' and (app_local_path is not defined or app_local_path == '')
+
+- name: Create service user
+  ansible.builtin.user:
+    name: "{{ app_service_user }}"
+    shell: /bin/bash
+    system: false
+    state: present
+
+- name: Ensure install directory exists
+  ansible.builtin.file:
+    path: "{{ app_install_dir }}"
+    state: directory
+    owner: "{{ app_service_user }}"
+    group: "{{ app_service_user }}"
+    mode: '0755'
+
+- name: Clone from git
+  ansible.builtin.git:
+    repo: "https://git:{{ app_git_token }}@{{ app_git_repo | regex_replace('^https?://', '') }}"
+    dest: "{{ app_install_dir }}"
+    version: main
+    force: true
+  become: true
+  become_user: "{{ app_service_user }}"
+  when: app_deploy_source == 'git'
+
+- name: Sync from local
+  ansible.posix.synchronize:
+    src: "{{ app_local_path }}/"
+    dest: "{{ app_install_dir }}/"
+    delete: true
+    rsync_path: "sudo rsync"
+    rsync_opts:
+      - "--exclude=.venv"
+      - "--exclude=__pycache__"
+      - "--exclude=.git"
+      - "--exclude=*.pyc"
+  when: app_deploy_source == 'local'
+
+- name: Update directory ownership
+  ansible.builtin.file:
+    path: "{{ app_install_dir }}"
+    owner: "{{ app_service_user }}"
+    group: "{{ app_service_user }}"
+    recurse: true
+
+- name: Sync uv dependencies
+  ansible.builtin.command:
+    cmd: /usr/local/bin/uv sync
+    chdir: "{{ app_install_dir }}"
+  become: true
+  become_user: "{{ app_service_user }}"
+  register: app_uv_sync
+  changed_when: "'Installed' in app_uv_sync.stderr or 'Removed' in app_uv_sync.stderr"
+
+- name: Deploy systemd service
+  ansible.builtin.template:
+    src: app.service.j2
+    dest: "/etc/systemd/system/{{ app_service_name }}.service"
+    mode: '0644'
+  notify: Restart app
+
+- name: Enable and start service
+  ansible.builtin.systemd:
+    name: "{{ app_service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: true

@@ -1,0 +1,13 @@
+[project]
+name = "ansible-template"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.12"
+dependencies = [
+    "ansible>=2.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ansible-lint",
+]

@@ -1,0 +1,22 @@
+---
+# Full initial setup
+# Usage: ansible-playbook setup.yml --ask-vault-pass
+# Skip optional roles: ansible-playbook setup.yml --ask-vault-pass --skip-tags vpn,st_link,label_printer
+
+- name: Setup devices
+  hosts: devices
+  become: true
+
+  vars_files:
+    - vault.yml
+
+  roles:
+    - role: eledio_admin.services.common
+    - role: eledio_admin.services.install_uv
+    - role: eledio_admin.services.vpn
+      tags: vpn
+    - role: eledio_admin.services.st_link
+      tags: st_link
+    - role: eledio_admin.services.label_printer
+      tags: label_printer
+    - role: app

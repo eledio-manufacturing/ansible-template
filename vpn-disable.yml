@@ -1,0 +1,17 @@
+---
+# Stop and disable VPN
+# Usage: ansible-playbook vpn-disable.yml
+
+- name: Disable VPN
+  hosts: devices
+  become: true
+
+  vars:
+    vpn_config_name: client
+
+  tasks:
+    - name: Stop and disable openvpn service
+      ansible.builtin.systemd:
+        name: "openvpn-client@{{ vpn_config_name }}"
+        enabled: false
+        state: stopped

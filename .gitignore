@@ -79,4 +79,16 @@ fabric.properties
 
 ### Ansible template
 *.retry
+vault.yml
+.vault-pass
+collections/
 
+### Python template
+__pycache__/
+*.py[cod]
+.venv
+env/
+venv/
+.pdm.toml
+.pdm-python
+.pdm-build/

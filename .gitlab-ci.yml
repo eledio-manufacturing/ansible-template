@@ -1,0 +1,33 @@
+stages:
+  - lint
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PYTHON_VERSION: "3.12"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .cache/pip
+    - .venv/
+
+.install_uv: &install_uv
+  - apt-get update && apt-get install -y git
+  - curl -LsSf https://astral.sh/uv/install.sh | sh
+  - export PATH="$HOME/.local/bin:$PATH"
+  - uv --version
+  - uv sync --extra dev
+  - uv run ansible-galaxy collection install -r requirements.yml -p ./collections
+
+lint:
+  stage: lint
+  image: python:3.12
+  before_script:
+    *install_uv
+  script:
+    - cp vault.yml.example vault.yml
+    - uv run ansible-lint
+  artifacts:
+    when: always
+    expire_in: 7 days
+  allow_failure: true

@@ -1,0 +1,18 @@
+---
+# Copy to vault.yml and encrypt: ansible-vault encrypt vault.yml
+
+sudo_password: "changeme"
+
+# eledio_admin.services.vpn
+vpn_config_content: |
+  client
+  dev tun
+  proto udp
+  remote vpn.example.com 1194
+  # ... rest of OpenVPN client config
+
+# eledio_admin.services.label_printer
+label_printer_git_user: "git"
+label_printer_git_token: "changeme"
+label_printer_config_content: |
+  # label printer config content here

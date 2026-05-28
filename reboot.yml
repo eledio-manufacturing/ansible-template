@@ -1,0 +1,23 @@
+---
+# Reboot devices
+# Usage: ansible-playbook reboot.yml --ask-vault-pass
+
+- name: Reboot devices
+  hosts: devices
+  become: true
+
+  vars_files:
+    - vault.yml
+
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+        msg: "Reboot initiated by Ansible"
+        reboot_timeout: 300
+        pre_reboot_delay: 5
+        post_reboot_delay: 30
+
+    - name: Wait for connection
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+        delay: 30

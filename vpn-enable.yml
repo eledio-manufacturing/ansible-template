@@ -1,0 +1,31 @@
+---
+# Enable and start VPN
+# Usage: ansible-playbook vpn-enable.yml --ask-vault-pass
+
+- name: Enable VPN
+  hosts: devices
+  become: true
+
+  vars_files:
+    - vault.yml
+
+  vars:
+    vpn_config_name: client
+
+  tasks:
+    - name: Enable and start openvpn service
+      ansible.builtin.systemd:
+        name: "openvpn-client@{{ vpn_config_name }}"
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Check VPN status
+      ansible.builtin.command: "systemctl status openvpn-client@{{ vpn_config_name }} --no-pager"
+      register: vpn_enable_status
+      changed_when: false
+      failed_when: false
+
+    - name: Show VPN status
+      ansible.builtin.debug:
+        var: vpn_enable_status.stdout_lines

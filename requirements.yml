@@ -1,0 +1,6 @@
+---
+collections:
+  - name: eledio_admin.services
+    version: "1.0.0"
+  - name: ansible.posix
+    version: ">=1.0.0"

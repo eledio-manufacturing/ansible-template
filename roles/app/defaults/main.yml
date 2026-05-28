@@ -1,0 +1,8 @@
+---
+app_service_name: app
+app_service_user: pi
+app_install_dir: /srv/app
+app_deploy_source: git  # git | local
+# app_git_repo: ""             # required when app_deploy_source == git (use ansible-vault)
+# app_git_token: ""            # required when app_deploy_source == git (use ansible-vault)
+app_local_path: ""             # required when app_deploy_source == local
