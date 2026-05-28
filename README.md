@@ -160,6 +160,4 @@ Customize `roles/app/templates/app.service.j2` and `roles/app/defaults/main.yml`
 
 ## CI/CD
 
-GitLab CI runs `ansible-lint` on every push. The `vault.yml.example` is copied to `vault.yml` before linting so the vault reference resolves.
-
-To use a private Ansible Galaxy server or token, set `ANSIBLE_GALAXY_SERVER_URL` and `ANSIBLE_GALAXY_SERVER_AUTH_URL` as CI variables.
+GitHub Actions runs `ansible-lint` on every push and pull request. The `vault.yml.example` is copied to `vault.yml` before linting so the vault reference resolves.
