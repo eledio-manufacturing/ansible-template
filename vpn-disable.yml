@@ -6,9 +6,6 @@
   hosts: devices
   become: true
 
-  vars:
-    vpn_config_name: client
-
   tasks:
     - name: Stop and disable openvpn service
       ansible.builtin.systemd:

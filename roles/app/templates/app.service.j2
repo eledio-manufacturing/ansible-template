@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User={{ app_service_user }}
 WorkingDirectory={{ app_install_dir }}
-ExecStart={{ app_install_dir }}/.venv/bin/python -m app
+ExecStart={{ app_exec_command }}
 Restart=on-failure
 RestartSec=5
 

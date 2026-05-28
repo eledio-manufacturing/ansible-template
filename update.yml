@@ -9,9 +9,6 @@
   vars_files:
     - vault.yml
 
-  vars:
-    app_service_name: app
-
   tasks:
     - name: Stop app service
       ansible.builtin.systemd:

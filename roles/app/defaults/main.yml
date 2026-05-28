@@ -6,3 +6,4 @@ app_deploy_source: git  # git | local
 # app_git_repo: ""             # required when app_deploy_source == git (use ansible-vault)
 # app_git_token: ""            # required when app_deploy_source == git (use ansible-vault)
 app_local_path: ""             # required when app_deploy_source == local
+app_exec_command: "{{ app_install_dir }}/.venv/bin/python -m app"

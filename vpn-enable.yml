@@ -9,9 +9,6 @@
   vars_files:
     - vault.yml
 
-  vars:
-    vpn_config_name: client
-
   tasks:
     - name: Enable and start openvpn service
       ansible.builtin.systemd:
