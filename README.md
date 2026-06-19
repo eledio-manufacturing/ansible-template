@@ -1,7 +1,7 @@
 # Ansible Template
 
 Project template for Ansible playbooks targeting Debian-based devices (Raspberry Pi OS, Ubuntu).
-Uses the [`eledio_admin.services`](https://galaxy.ansible.com/ui/repo/published/eledio_admin/services/) collection.
+Uses the [`eledio.services`](https://galaxy.ansible.com/ui/repo/published/eledio/services/) collection.
 
 ## Prerequisites
 
@@ -50,10 +50,10 @@ uv run ansible-galaxy collection install -r requirements.yml -p ./collections
 | Variable | Used by | Description |
 |---|---|---|
 | `sudo_password` | inventory | SSH + sudo password |
-| `vpn_config_content` | `eledio_admin.services.vpn` | Full OpenVPN client config |
-| `label_printer_git_user` | `eledio_admin.services.label_printer` | Git username |
-| `label_printer_git_token` | `eledio_admin.services.label_printer` | Git access token |
-| `label_printer_config_content` | `eledio_admin.services.label_printer` | Printer config file content |
+| `vpn_config_content` | `eledio.services.vpn` | Full OpenVPN client config |
+| `label_printer_git_user` | `eledio.services.label_printer` | Git username |
+| `label_printer_git_token` | `eledio.services.label_printer` | Git access token |
+| `label_printer_config_content` | `eledio.services.label_printer` | Printer config file content |
 | `app_git_repo` | `roles/app` | Git repo URL (when `app_deploy_source: git`) |
 | `app_git_token` | `roles/app` | Git access token (when `app_deploy_source: git`) |
 
@@ -78,11 +78,11 @@ Collection roles applied in order:
 
 | Role | Tag | Description |
 |---|---|---|
-| `eledio_admin.services.common` | — | apt update + base packages |
-| `eledio_admin.services.install_uv` | — | install uv Python manager |
-| `eledio_admin.services.vpn` | `vpn` | install OpenVPN + deploy client config |
-| `eledio_admin.services.st_link` | `st_link` | ST-Link udev rules |
-| `eledio_admin.services.label_printer` | `label_printer` | label printer service |
+| `eledio.services.common` | — | apt update + base packages |
+| `eledio.services.install_uv` | — | install uv Python manager |
+| `eledio.services.vpn` | `vpn` | install OpenVPN + deploy client config |
+| `eledio.services.st_link` | `st_link` | ST-Link udev rules |
+| `eledio.services.label_printer` | `label_printer` | label printer service |
 | `roles/app` | — | project-specific app deployment |
 
 ### update.yml

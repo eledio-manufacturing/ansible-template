@@ -11,12 +11,12 @@
     - vault.yml
 
   roles:
-    - role: eledio_admin.services.common
-    - role: eledio_admin.services.install_uv
-    - role: eledio_admin.services.vpn
+    - role: eledio.services.common
+    - role: eledio.services.install_uv
+    - role: eledio.services.vpn
       tags: vpn
-    - role: eledio_admin.services.st_link
+    - role: eledio.services.st_link
       tags: st_link
-    - role: eledio_admin.services.label_printer
+    - role: eledio.services.label_printer
       tags: label_printer
     - role: app
